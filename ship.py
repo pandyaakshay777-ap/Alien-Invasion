@@ -19,8 +19,7 @@ class Ship:
         self.rect = self.image.get_rect()
 
         #Properties
-        self.rect.midbottom = self.screen_rect.midbottom
-        self.x = float(self.rect.x)
+        self._center_ship()
         self.speed = self.settings.ship_speed
 
         #Flags
@@ -45,3 +44,10 @@ class Ship:
             self.x -= self.speed
         #Update its Position
         self.rect.x = self.x
+
+    def _center_ship(self):
+        '''
+        Positions the Ship in the Middle of the Screen
+        '''
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)

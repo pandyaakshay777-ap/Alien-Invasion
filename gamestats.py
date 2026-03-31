@@ -6,11 +6,11 @@ class GameStats:
         '''
         Initializes the Game Statistics
         '''
-        self.settings = ai_game.settings
-        self._reset_stats()
+        self.settings = ai_game.settings # Import Settings of The Game
+        self._reset_stats() # Reset the Stats
 
     def _reset_stats(self):
         '''
         Resets the Statistics Of the Game
         '''
-        self.ships_left = self.settings.ship_limit
+        self.ships_left = self.settings.ship_limit # Import the limit number of ships
