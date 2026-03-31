@@ -65,9 +65,9 @@
 * Press <b>Spacebar</b> to shoot <em>bullets</em> (Only 3 at a time allowed).
 * Do not let the <em>alien</em> touch the bottom edge or collide with your ship.
 * You will only have three tries.
-* <b>MOST IMPORTANT !! - PRESS q TO EXIT.</b>
+* <b>MOST IMPORTANT !! - PRESS 'q' TO EXIT.</b>
 
 ## Credits
 
 * [Python Crash Course, 3rd edition](https://github.com/ehmatthes/pcc_3e)
-* [pygame-ce](https://github.com/pygame-community/pygame-ce)# Alien Invasion
+* [pygame-ce](https://github.com/pygame-community/pygame-ce)
