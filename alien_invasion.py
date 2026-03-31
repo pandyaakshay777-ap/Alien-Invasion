@@ -104,7 +104,24 @@ class AlienInvasion:
         Creates a Fleet of Aliens
         '''
         alien = Alien(self)
-        self.aliens.add(alien)
+        
+        current_x = alien.x
+        current_y = alien.rect.y
+        while current_y < self.settings.screen_height - 3 * alien.rect.height:
+            while current_x < self.settings.screen_width - 2 * alien.rect.width:
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien.rect.width
+            current_x = alien.x
+            current_y += 2 * alien.rect.height
+
+    def _create_alien(self, x_position, y_position):
+        '''
+        Create an Alien
+        '''
+        new_alien = Alien(self)
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
 
     def _update_screen(self):
         '''
