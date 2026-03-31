@@ -82,6 +82,7 @@ class AlienInvasion:
             self.scoreboard._prep_score()
             self.scoreboard._prep_high_score()
             self.scoreboard._prep_level()
+            self.scoreboard._prep_ships()
             self.settings._initialize_dynamic_settings()
             self.game_active = True
             pygame.mouse.set_visible(False)
@@ -140,26 +141,29 @@ class AlienInvasion:
         self._bullet_alien_collide()
 
     def _bullet_alien_collide(self):
-        '''
-        Detect Collison of Alien with Bullet and Respond Appropriately
-        '''
-        # Records Collisions
+        """Respond to bullet-alien collisions."""
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
-        # Updates the Score on Collision
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
-                self.stats._check_high_score() # Check if High Score is Updated
-                self.scoreboard._prep_score() # Update the Scoreboard
-                self.scoreboard._prep_high_score() # Update the High Scoreboard
+                self.stats._check_high_score()
+                self.scoreboard._prep_score()
+                self.scoreboard._prep_high_score()
 
-        # If All Aliens are Destroyed => Create New Fleet, Level Up and Reposition Ship    
-        if not self.aliens.sprites():
-            self._create_fleet()
-            self.ship._center_ship()
-            self.settings.increase_speed()
-            self.scoreboard._prep_level()
+            if not self.aliens.sprites():
+                # Destroy existing bullets and create new fleet.
+                self.bullets.empty()
+                self._create_fleet()
+                # Moved the level up logic to a place where it won't 
+                # trigger during a _ship_hit reset.
+                self._start_new_level()
+
+    def _start_new_level(self):
+        """Increase level and speed when a fleet is cleared."""
+        self.settings.increase_speed()
+        self.stats.level += 1
+        self.scoreboard._prep_level()
 
     def _create_fleet(self):
         '''
@@ -223,11 +227,11 @@ class AlienInvasion:
         # Checks if any Ship Left
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1 # Update the Number of Ships
+            self.scoreboard._prep_ships() # Update the Scoreboard
             self.ship._center_ship() # Repositions the Ship
 
             self.bullets.empty() # Delete all Current Bullets
             self.aliens.empty() # Delete all Current Alien
-            self.stats.level -= 1 # Level Down
             self._create_fleet() # Create New Fleet
             sleep(0.5) #Pause for 1/2 Seconds
         else:

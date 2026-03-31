@@ -1,6 +1,7 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+class Ship(Sprite):
     '''
     Class that manages ship.
     '''
@@ -9,6 +10,7 @@ class Ship:
         '''
         Initializing Ship and its Position
         '''
+        super().__init__() # Make it a Sprite
         #Initializing the Screen Dimensions
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
