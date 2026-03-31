@@ -79,6 +79,9 @@ class AlienInvasion:
         check_play_button = self.button.rect.collidepoint(mouse_pos)
         if check_play_button and not self.game_active:
             self.stats._reset_stats()
+            self.scoreboard._prep_score()
+            self.scoreboard._prep_high_score()
+            self.scoreboard._prep_level()
             self.settings._initialize_dynamic_settings()
             self.game_active = True
             pygame.mouse.set_visible(False)
@@ -147,14 +150,16 @@ class AlienInvasion:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
+                self.stats._check_high_score() # Check if High Score is Updated
                 self.scoreboard._prep_score() # Update the Scoreboard
+                self.scoreboard._prep_high_score() # Update the High Scoreboard
 
         # If All Aliens are Destroyed => Create New Fleet, Level Up and Reposition Ship    
         if not self.aliens.sprites():
             self._create_fleet()
             self.ship._center_ship()
             self.settings.increase_speed()
-
+            self.scoreboard._prep_level()
 
     def _create_fleet(self):
         '''
@@ -222,11 +227,12 @@ class AlienInvasion:
 
             self.bullets.empty() # Delete all Current Bullets
             self.aliens.empty() # Delete all Current Alien
-
+            self.stats.level -= 1 # Level Down
+            self._create_fleet() # Create New Fleet
             sleep(0.5) #Pause for 1/2 Seconds
         else:
             self.game_active = False # Game Over
-            pygame.mouse.set_visible(True)
+            pygame.mouse.set_visible(True) # Make Mouse Visible Again 
 
     def _check_fleet_edges(self):
         '''
