@@ -14,3 +14,4 @@ class GameStats:
         Resets the Statistics Of the Game
         '''
         self.ships_left = self.settings.ship_limit # Import the limit number of ships
+        self.score = 0 # Initial Score

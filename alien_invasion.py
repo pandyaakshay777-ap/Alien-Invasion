@@ -9,6 +9,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from scoreboard import Scoreboard
 
 class AlienInvasion:
     '''
@@ -35,6 +36,7 @@ class AlienInvasion:
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
+        self.scoreboard = Scoreboard(self)
         self.button = Button(self, 'Play')
 
     def run_game(self):
@@ -138,9 +140,16 @@ class AlienInvasion:
         '''
         Detect Collison of Alien with Bullet and Respond Appropriately
         '''
-        #Records Collisions
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)\
-        #Resets Screen
+        # Records Collisions
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        # Updates the Score on Collision
+        if collisions:
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
+                self.scoreboard._prep_score() # Update the Scoreboard
+
+        # If All Aliens are Destroyed => Create New Fleet, Level Up and Reposition Ship    
         if not self.aliens.sprites():
             self._create_fleet()
             self.ship._center_ship()
@@ -244,6 +253,8 @@ class AlienInvasion:
         '''
         #BG COLOUR
         self.screen.fill(self.settings.bg_color)
+        #PAINT SCOREBOARD
+        self.scoreboard.show_score()
         #PAINT BULLETS
         for bullet in self.bullets.sprites():
             bullet.draw()

@@ -9,6 +9,7 @@ class Settings:
         '''
         # Scale Factor for Level Up
         self.speed_scale = 1.1
+        self.score_scale = 1.5
 
         # Screen Settings
         self.screen_width = 800
@@ -35,6 +36,10 @@ class Settings:
         self.button_text_color = (255, 255, 255)
         self.button_text_size = 48
 
+        # Scoreboard Settings
+        self.text_color = (30, 30, 30)
+        self.font_size = 48
+
         # Dynamic Settings
         self._initialize_dynamic_settings()
 
@@ -44,7 +49,8 @@ class Settings:
         '''
         self.ship_speed = 1.5
         self.alien_speed = 1.0
-        self.bullet_speed = 3.0
+        self.bullet_speed = 4.0
+        self.alien_points = 50
     
     def increase_speed(self):
         '''
@@ -53,3 +59,4 @@ class Settings:
         self.ship_speed *= self.speed_scale
         self.bullet_speed *= self.speed_scale
         self.alien_speed *= self.speed_scale
+        self.alien_points = int(self.alien_points * self.score_scale)
